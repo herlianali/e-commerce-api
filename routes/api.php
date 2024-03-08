@@ -24,3 +24,9 @@ Route::name('.')->group(function () {
         Route::resource('/', App\Http\Controllers\ProdukController::class)->parameter('', 'id');
     });
 });
+
+Route::name('.')->group(function () {
+    Route::prefix('user')->name('user.')->group(function () {
+        // Route::resource('/', );
+    });
+});
