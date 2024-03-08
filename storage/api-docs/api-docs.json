@@ -1,0 +1,45 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "api/produk": {
+            "get": {
+                "tags": [
+                    "Produk"
+                ],
+                "summary": "Get a list of produk",
+                "description": "Mengambil Data Kategori Berita",
+                "operationId": "472a86458a8c2422ff8673c479556893",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "api/produk/{id}": {
+            "get": {
+                "tags": [
+                    "Produk"
+                ],
+                "summary": "Get some of produk",
+                "description": "Mengambil Data Kategori Berita",
+                "operationId": "17057f53dd09d7f862041dcb116735e4",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        }
+    }
+}
