@@ -25,8 +25,8 @@ Route::name('.')->group(function () {
     });
 });
 
-Route::name('.')->group(function () {
-    Route::prefix('user')->name('user.')->group(function () {
-        // Route::resource('/', );
-    });
-});
+// Route::name('.')->group(function () {
+//     Route::prefix('user')->name('user.')->group(function () {
+//         Route::resource('/', );
+//     });
+// });

@@ -4,29 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProdukShowRequest;
 
 class ProdukController extends Controller
 {
 
     /**
      * @OA\Get(
-     *     path="api/produk",
-     *     operationId="produkAll",
-     *     summary="Get a list of produk",
+     *     path="/produk",
+     *     operationId="getProdukList",
      *     tags={"Produk"},
-     *     security={
-     *        {"api-key": {}}
-     *     },
+     *     summary="Get a list of produk",
+     *     description="Returns list of projects",
      *     @OA\Response(
-     *         response="200",
+     *         response=200,
      *         description="Everything is fine",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 type="array",
-     *                 @OA\Items(ref="#/components/schemas/ExampleShowRequest"),
-     *             )
-     *         )
+     *         @OA\Items(ref="#/components/schemas/ProdukShowRequest"),
      *     ),
      * )
      */
@@ -56,27 +49,24 @@ class ProdukController extends Controller
 
     /**
      * @OA\Get(
-     *     path="api/produk/{id}",
-     *     operationId="produkGet",
+     *     path="/produk/{id}",
+     *     operationId="getProdukById",
      *     tags={"Produk"},
      *     summary="Get produk by ID",
-     *     security={
-     *       {"api_key": {}},
-     *     },
+     *     description="Returns project data",
      *     @OA\Parameter(
      *         name="id",
-     *         in="path",
      *         description="The ID of produk",
      *         required=true,
-     *         produk="1",
+     *         in="path",
      *         @OA\Schema(
      *             type="integer",
      *         ),
      *     ),
      *     @OA\Response(
-     *         response="200",
+     *         response=200,
      *         description="Everything is fine",
-     *         @OA\JsonContent(ref="#/components/schemas/ProdukShowRequest")
+     *         @OA\JsonContent(ref="App\Models\Produk")
      *     ),
      * )
      *
