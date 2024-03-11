@@ -11,7 +11,6 @@ class ProdukController extends Controller
     /**
      * @OA\Get(
      *     path="api/produk",
-     *     operationId="produkAll",
      *     summary="Get a list of produk",
      *     tags={"Produk"},
      *     security={
@@ -54,33 +53,6 @@ class ProdukController extends Controller
         ], 201);
     }
 
-    /**
-     * @OA\Get(
-     *     path="api/produk/{id}",
-     *     operationId="produkGet",
-     *     tags={"Produk"},
-     *     summary="Get produk by ID",
-     *     security={
-     *       {"api_key": {}},
-     *     },
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="The ID of produk",
-     *         required=true,
-     *         produk="1",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response="200",
-     *         description="Everything is fine",
-     *         @OA\JsonContent(ref="#/components/schemas/ProdukShowRequest")
-     *     ),
-     * )
-     *
-     */
     public function show($id)
     {
         $produk = Produk::findOrFail($id);
