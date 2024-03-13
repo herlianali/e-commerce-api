@@ -11,8 +11,8 @@ class ProdukController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/produk",
-     *     operationId="getProdukList",
+     *     path="api/produk",
+     *     summary="Get a list of produk",
      *     tags={"Produk"},
      *     summary="Get a list of produk",
      *     description="Returns list of projects",
