@@ -12,10 +12,6 @@ use Illuminate\Routing\Controller as BaseController;
  *     title="API For E-commerce",
  *     version="1.0.0",
  * )
- * @OA\Tag(
- *     name="Examples",
- *     description="Some example pages",
- * )
  * @OA\Server(
  *     description="Laravel Swagger API server",
  *     url="http://localhost/api"
