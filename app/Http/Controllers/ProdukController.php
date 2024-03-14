@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProdukShowRequest;
+<<<<<<< HEAD
+=======
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
+>>>>>>> 17fa5b7cf3f3b9a0734bd21262f9f70fdb2f2c51
 
 class ProdukController extends Controller
 {
@@ -26,30 +32,63 @@ class ProdukController extends Controller
     public function index() 
     {
         $produk = Produk::all();
-        return response()->json($produk);
+        $res = [
+            'message' => 'List Of Produk',
+            'data' => $produk,
+        ];
+        return response()->json($res, Response::HTTP_OK);
     }
 
+    /**
+     * @OA\Post(
+     *     path="api/produk",
+     *     tags={"Produk"},
+     *     summary="Add some of produk",
+     *     description="Returns adding of projects",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Everything is fine",
+     *         @OA\Items(ref="#/components/schemas/ProdukShowRequest"),
+     *     ),
+     * )
+     */
     public function store(Request $request)
     {
-        $produk = new Produk;
-        $produk->nama_produk = $request->nama_produk;
-        $produk->harga = $request->harga;
-        $produk->kategory = $request->kategory;
-        $produk->brand = $request->brand;
-        $produk->size = $request->size;
-        $produk->color = $request->color;
-        $produk->rating = $request->rating;
-        $produk->options = $request->options;
-        $produk->image = $request->image;
-        $produk->save();
-        return response()->json([
-            'message' => "Produk Berhasil Di Tambahkan"
-        ], 201);
+        $validate = Validator::make($request->all(), [
+            'nama_produk' => ['required'],
+            'harga'       => ['required','numeric'],
+            'kategory'    => ['required'],
+            'brand'       => ['required'],
+            'size'        => ['required'],
+            'color'       => ['required'],
+            'rating'      => ['required'],
+            'options'     => ['required'],
+            'image'       => ['required'],
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json($validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        try {
+            $produk = Produk::create($request->all());
+            $res = [
+                'message' => 'Produk Baru Telah Ditambahkan',
+                'data'    => $produk,
+            ];
+
+            return response()->json($res, Response::HTTP_CREATED);
+        } catch(QueryException $e) {
+            return response()->json([
+                'message' => 'Failed ' . $e->errorInfo
+            ]);
+        }
     }
 
     /**
      * @OA\Get(
      *     path="/produk/{id}",
+<<<<<<< HEAD
      *     operationId="getProdukById",
      *     tags={"Produk"},
      *     summary="Get produk by ID",
@@ -63,6 +102,11 @@ class ProdukController extends Controller
      *             type="integer",
      *         ),
      *     ),
+=======
+     *     tags={"Produk"},
+     *     summary="Get produk by ID",
+     *     description="Returns project data",
+>>>>>>> 17fa5b7cf3f3b9a0734bd21262f9f70fdb2f2c51
      *     @OA\Response(
      *         response=200,
      *         description="Everything is fine",
@@ -73,16 +117,97 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
+        $produk = Produk::where('id', $id)->get();
+        $res = [
+            'message' => 'Ambil Data Produk Dengan Id',
+            'data'    => $produk,
+        ];
+
+        return response()->json($res, Response::HTTP_OK);
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/produk/{id}",
+     *     tags={"Produk"},
+     *     summary="Update produk by ID",
+     *     description="Returns project data",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Everything is fine",
+     *         @OA\JsonContent(ref="App\Models\Produk")
+     *     ),
+     * )
+     *
+     */
+    public function update(Request $request, $id)
+    {
         $produk = Produk::findOrFail($id);
-        if(!empty($produk)) {
-            return response()->json($produk);
+
+        $validate = Validator::make($request->all(), [
+            'nama_produk' => ['required'],
+            'harga'       => ['required','numeric'],
+            'kategory'    => ['required'],
+            'brand'       => ['required'],
+            'size'        => ['required'],
+            'color'       => ['required'],
+            'rating'      => ['required'],
+            'options'     => ['required'],
+            'image'       => ['required'],
+        ]);
+
+        if($validate->fails()){
+            return response()->json($validate->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        else {
+        
+        try {
+            $produk->update($request->all());
+            $res = [
+                'message' => 'Barang Keluar telah terupdate',
+                'data'    => $produk,
+            ];
+
+            return response()->json($res, Response::HTTP_OK);
+
+        } catch (QueryException $e) {
             return response()->json([
-                'message' => "Produk not found",
-            ], 404);
+                'message' => 'Failed ' . $e->errorInfo
+            ]);
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/produk/{id}",
+     *     operationId="getProdukById",
+     *     tags={"Produk"},
+     *     summary="Delete produk by ID",
+     *     description="Returns project data",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Everything is fine",
+     *         @OA\JsonContent(ref="App\Models\Produk")
+     *     ),
+     * )
+     *
+     */
+    public function destroy($id)
+    {
+        $produk = Produk::where('id', $id);
+
+        try {
+            $produk->delete();
+            $res = [
+                'message' => 'Produk Telah Terhapus'
+            ];
+
+            return response()->json($res, Response::HTTP_OK);
+
+        } catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Failed ' . $e->errorInfo
+            ]);
+        }
+    }
     
 }

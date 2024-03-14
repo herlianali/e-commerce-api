@@ -18,14 +18,29 @@
         }
     ],
     "paths": {
-        "/produk": {
+        "http://127.0.0.1:8000/api/produk": {
             "get": {
                 "tags": [
                     "Produk"
                 ],
                 "summary": "Get a list of produk",
                 "description": "Returns list of projects",
-                "operationId": "getProdukList",
+                "operationId": "2b467541446c7fddb466ba5fd903a440",
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine"
+                    }
+                }
+            }
+        },
+        "api/produk": {
+            "post": {
+                "tags": [
+                    "Produk"
+                ],
+                "summary": "Add some of produk",
+                "description": "Returns adding of projects",
+                "operationId": "f265ab1bcdf85fba74fb7f0b43a605a8",
                 "responses": {
                     "200": {
                         "description": "Everything is fine"
@@ -40,18 +55,47 @@
                 ],
                 "summary": "Get produk by ID",
                 "description": "Returns project data",
-                "operationId": "getProdukById",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "The ID of produk",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                "operationId": "a9b843ccf7030352b03d3fdf4f76b2ca",
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "App\\Models\\Produk"
+                                }
+                            }
                         }
                     }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Produk"
                 ],
+                "summary": "Update produk by ID",
+                "description": "Returns project data",
+                "operationId": "a58ff4a15b22ce4ba425f218eb8ea003",
+                "responses": {
+                    "200": {
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "App\\Models\\Produk"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Produk"
+                ],
+                "summary": "Delete produk by ID",
+                "description": "Returns project data",
+                "operationId": "getProdukById",
                 "responses": {
                     "200": {
                         "description": "Everything is fine",
@@ -75,11 +119,5 @@
                 "in": "header"
             }
         }
-    },
-    "tags": [
-        {
-            "name": "Examples",
-            "description": "Some example pages"
-        }
-    ]
+    }
 }
