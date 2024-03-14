@@ -13,4 +13,13 @@ class CouponsService extends Service
     {
         $this->coupons = $coupons;
     }
+
+    public function searchCoupons($params)
+    {
+        $coupons = $this->coupons;
+
+        return $this->searchResponse($params, $coupons);
+    }
+
+    
 }
