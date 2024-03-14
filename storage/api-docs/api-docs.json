@@ -1,45 +1,85 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My First API",
-        "version": "0.1"
+        "title": "Laravel Swagger API documentation example",
+        "contact": {
+            "email": "admin@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://localhost/api",
+            "description": "Laravel Swagger API server"
+        }
+    ],
     "paths": {
-        "api/produk": {
+        "/produk": {
             "get": {
                 "tags": [
                     "Produk"
                 ],
                 "summary": "Get a list of produk",
-                "description": "Mengambil Data Kategori Berita",
-                "operationId": "472a86458a8c2422ff8673c479556893",
+                "description": "Returns list of projects",
+                "operationId": "getProdukList",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
-                    },
-                    "400": {
-                        "description": "Invalid request"
+                        "description": "Everything is fine"
                     }
                 }
             }
         },
-        "api/produk/{id}": {
+        "/produk/{id}": {
             "get": {
                 "tags": [
                     "Produk"
                 ],
-                "summary": "Get some of produk",
-                "description": "Mengambil Data Kategori Berita",
-                "operationId": "17057f53dd09d7f862041dcb116735e4",
+                "summary": "Get produk by ID",
+                "description": "Returns project data",
+                "operationId": "getProdukById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of produk",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
-                    },
-                    "400": {
-                        "description": "Invalid request"
+                        "description": "Everything is fine",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "App\\Models\\Produk"
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "X-APP-ID": {
+                "type": "apiKey",
+                "name": "X-APP-ID",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Examples",
+            "description": "Some example pages"
+        }
+    ]
 }
