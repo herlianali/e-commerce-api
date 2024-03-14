@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProdukShowRequest;
-<<<<<<< HEAD
-=======
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
->>>>>>> 17fa5b7cf3f3b9a0734bd21262f9f70fdb2f2c51
 
 class ProdukController extends Controller
 {
@@ -88,25 +85,9 @@ class ProdukController extends Controller
     /**
      * @OA\Get(
      *     path="/produk/{id}",
-<<<<<<< HEAD
-     *     operationId="getProdukById",
      *     tags={"Produk"},
      *     summary="Get produk by ID",
      *     description="Returns project data",
-     *     @OA\Parameter(
-     *         name="id",
-     *         description="The ID of produk",
-     *         required=true,
-     *         in="path",
-     *         @OA\Schema(
-     *             type="integer",
-     *         ),
-     *     ),
-=======
-     *     tags={"Produk"},
-     *     summary="Get produk by ID",
-     *     description="Returns project data",
->>>>>>> 17fa5b7cf3f3b9a0734bd21262f9f70fdb2f2c51
      *     @OA\Response(
      *         response=200,
      *         description="Everything is fine",
