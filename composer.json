@@ -13,6 +13,8 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "php-open-source-saver/jwt-auth": "^2.1",
+        "phpmailer/phpmailer": "^6.9",
+        "xendit/xendit-php": "^4.3",
         "zircote/swagger-php": "^4.8"
     },
     "require-dev": {

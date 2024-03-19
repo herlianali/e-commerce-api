@@ -2,98 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Http\JsonResponse;
+use Laravel\Socialite\Contracts\User as SocialiteUser;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    public function __construct(User $user)
+    public function redirectToAuth(): JsonResponse
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
-        // $this->user = $user;
+        return response()->json([
+            'url' => Socialite::driver('google')->stateless()->redirect()->getTargetUrl(),
+        ]);
     }
 
-    public function register(Request $request)
+    public function handleAuthCallback(): JsonResponse
     {
-        $this->validate($request, [
-            'name' => 'required|string|min:2|max:255',
-            'email' => 'required|string|email:rfc,dns|max:255|unique:users',
-            'password' => 'required|string|min:6|max:255',
-        ]);
+        try {
+            /** @var SocialiteUser $socialiteUser */
+            $socialiteUser = Socialite::driver('google')->stateless()->user();
+        } catch (ClientException $e) {
+            return response()->json(['error' => 'Invalid credentials provided.'], 422);
+        }
 
-        $user = $this->user::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' =>bcrypt($request['password']),
-            'role' => 1,
-        ]);
-
-        $token = auth()->login($user);
+        /** @var User $user */
+        $user = User::query()
+            ->firstOrCreate(
+                [
+                    'email' => $socialiteUser->getEmail(),
+                ],
+                [
+                    'email_verified_at' => now(),
+                    'name' => $socialiteUser->getName(),
+                    'google_id' => $socialiteUser->getId(),
+                    'avatar' => $socialiteUser->getAvatar(),
+                ]
+            );
 
         return response()->json([
-            'meta' => [
-                'code' => 200,
-                'status' => 'success',
-                'message' => 'User created successfully',
-            ],
-            'data' => [
-                'user' => $user,
-                'access_token' => [
-                    'token' => $token,
-                    'type' => 'Bearer',
-                    'expires_in' => auth()->factory()->getTTL() * 60,
-                ],
-            ],
+            'user' => $user,
+            'access_token' => $user->createToken('google-token')->plainTextToken,
+            'token_type' => 'Bearer',
         ]);
-    }
-
-    public function login(Request $request)
-    {
-        $this->validate($request, [
-            'email' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        $token = auth()->attempt([
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
-
-        if ($token) {
-            return response()->json([
-                'meta' => [
-                    'code' => 200,
-                    'status' => 'success',
-                    'message' => 'Quote fetched successfully.',
-                ],
-                'data' => [
-                    'user' => auth()->user(),
-                    'access_token' => [
-                        'token' => $token,
-                        'type' => 'Bearer',
-                        'expires_in' => auth()->factory()->getTTL() * 60,
-                    ],
-                ],
-            ]);
-        }
-    }
-
-    public function logout()
-    {
-        $token = JWTAuth::getToken();
-        $invalidate = JWTAuth::invalidate($token);
-
-        if ($invalidate) {
-            return response()->json([
-                'meta' => [
-                    'code' => 200,
-                    'status' => 'success',
-                    'message' => 'Successfully logged out',
-                ],
-                'data' => [],
-            ]);
-        }
     }
 }
