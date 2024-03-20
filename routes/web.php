@@ -28,14 +28,14 @@ Route::get('/', function () {
 //     return Socialite::driver('google')->redirect();
 // });
 
-Route::get('login/google/redirect', [SocialiteController::class, 'redirect'])
-    ->middleware(['guest'])
-    ->name('redirect');
+// Route::get('login/google/redirect', [SocialiteController::class, 'redirect'])
+//     ->middleware(['guest'])
+//     ->name('redirect');
 
-// Untuk callback dari Google
-Route::get('login/google/callback', [SocialiteController::class, 'callback'])
-    ->middleware(['guest'])
-    ->name('callback');
+// // Untuk callback dari Google
+// Route::get('login/google/callback', [SocialiteController::class, 'callback'])
+//     ->middleware(['guest'])
+//     ->name('callback');
 
 // Untuk logout
 Route::post('logout', [SocialiteController::class, 'logout'])

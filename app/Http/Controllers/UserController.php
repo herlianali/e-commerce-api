@@ -12,7 +12,7 @@ class UserController extends Controller
         $this->user = $user;
     }
 
-    public function me()
+    public function index()
     {
         return response()->json([
             'meta' => [
@@ -21,7 +21,7 @@ class UserController extends Controller
                 'message' => 'User fetched successfully!',
             ],
             'data' => [
-                'user' => auth()->user(),
+                'user' => User::all(),
             ],
         ]);
     }
